@@ -1,9 +1,20 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getMessaging, getToken } 
-from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  query, 
+  orderBy 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Firebase
+import { 
+  getMessaging, 
+  getToken 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+
+// 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyAmElPVCV5bIoUste1aunreoWswNak_hh8",
   authDomain: "chat-e3c2a.firebaseapp.com",
@@ -17,6 +28,20 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
+// ✅ تسجيل Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log("Service Worker registered:", registration);
+    })
+    .catch((error) => {
+      console.log("Service Worker registration failed:", error);
+    });
+}
+
+
+// 🔔 إعداد الإشعارات
 const messaging = getMessaging(app);
 
 async function requestPermission() {
@@ -37,10 +62,12 @@ async function requestPermission() {
 
 requestPermission();
 
+
+// ================== الشات ==================
+
 const messagesRef = collection(db, "messages");
 const q = query(messagesRef, orderBy("time"));
 
-// عناصر الصفحة
 const messagesDiv = document.getElementById("messages");
 const nameInput = document.getElementById("name");
 const messageInput = document.getElementById("message");
@@ -50,11 +77,13 @@ const recordBtn = document.getElementById("recordBtn");
 const profileInput = document.getElementById("profileInput");
 const recordingStatus = document.getElementById("recordingStatus");
 
+
 // حفظ الاسم
 nameInput.value = localStorage.getItem("username") || "";
 nameInput.addEventListener("input", () => {
   localStorage.setItem("username", nameInput.value);
 });
+
 
 // صورة البروفايل
 let profilePic = localStorage.getItem("profilePic");
@@ -71,11 +100,13 @@ profileInput.addEventListener("change", e => {
   reader.readAsDataURL(file);
 });
 
+
 // تنسيق الوقت
 function formatTime(timestamp) {
   const d = new Date(timestamp);
   return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
+
 
 // عرض الرسائل
 onSnapshot(q, snapshot => {
@@ -113,6 +144,7 @@ onSnapshot(q, snapshot => {
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
+
 // إرسال نص
 async function sendMessage() {
   const name = nameInput.value.trim();
@@ -134,6 +166,7 @@ messageInput.addEventListener("keypress", e => {
   if (e.key === "Enter") sendMessage();
 });
 
+
 // إرسال صورة
 imageInput.addEventListener("change", async e => {
   const file = e.target.files[0];
@@ -150,6 +183,7 @@ imageInput.addEventListener("change", async e => {
   };
   reader.readAsDataURL(file);
 });
+
 
 // تسجيل الصوت
 let mediaRecorder;
