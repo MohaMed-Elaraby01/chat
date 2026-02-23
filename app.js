@@ -66,7 +66,7 @@ onSnapshot(q, snapshot => {
     const msgDiv = document.createElement("div");
     msgDiv.className = "message " + (isMe ? "sent" : "received");
 
-    const avatar = data.profilePic || profilePic || "";
+    const avatar = data.profilePic || "default-avatar.png";
     const avatarHTML = avatar ? `<img src="${avatar}" class="avatar">` : "";
 
     let content = "";
