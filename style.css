@@ -1,0 +1,120 @@
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', Arial, sans-serif;
+  background-image: url('background-pink.jpg'); /* ضع صورة وردية لطيفة */
+  background-size: cover;
+  background-position: center;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+.chat-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.chat-container {
+  width: 100%;
+  max-width: 400px;
+  height: 90vh;
+  background: rgba(255, 192, 203, 0.7);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(255,105,180,0.5);
+}
+
+.header {
+  padding: 15px;
+  background: rgba(255,182,193,0.9);
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.message {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 15px;
+  font-size: 14px;
+  word-wrap: break-word;
+  position: relative;
+}
+
+.sent { 
+  align-self: flex-end; 
+  background: #ffc0cb;
+  color: #000; 
+  border-bottom-right-radius:5px;
+}
+
+.received { 
+  align-self: flex-start; 
+  background: #fff0f5;
+  color: #000; 
+  border-bottom-left-radius:5px;
+}
+
+.name { font-size:11px; opacity:0.7; margin-bottom:3px; }
+
+/* تصميم الريبلاي واضح فوق الاسم */
+.reply { 
+  font-size:13px; 
+  background: rgba(255,228,225,0.8); 
+  padding:6px 10px; 
+  border-radius:12px; 
+  margin-bottom:5px; 
+  font-style: italic;
+  border-left: 4px solid #ff69b4; 
+  max-width: 80%;
+  overflow-wrap: break-word;
+}
+
+.message-actions { display:flex; gap:5px; margin-top:5px; }
+.action-btn { cursor:pointer; font-size:14px; user-select:none; padding:2px 5px; background:rgba(0,0,0,0.2); border-radius:5px; }
+
+.input-area {
+  display: flex;
+  padding: 10px;
+  background: rgba(255,182,193,0.9);
+}
+
+.input-area input,
+.input-area textarea {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin-right: 5px;
+  resize: none;
+}
+
+.input-area button {
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  background: #ff69b4;
+  color: white;
+  cursor: pointer;
+}
