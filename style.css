@@ -1,120 +1,151 @@
 body {
   margin: 0;
-  font-family: 'Comic Sans MS', Arial, sans-serif;
-  background-image: url('background-pink.jpg'); /* ضع صورة وردية لطيفة */
-  background-size: cover;
-  background-position: center;
+  font-family: Arial, sans-serif;
+  background: #ece5dd;
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  top:0; left:0; right:0; bottom:0;
-  backdrop-filter: blur(8px);
-  z-index: -1;
-}
-
+/* ملء الشاشة */
 .chat-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
 .chat-container {
   width: 100%;
-  max-width: 400px;
-  height: 90vh;
-  background: rgba(255, 192, 203, 0.7);
-  border-radius: 20px;
+  height: 100vh;
+  background: #ece5dd;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 0 20px rgba(255,105,180,0.5);
 }
 
+/* الهيدر */
 .header {
-  padding: 15px;
-  background: rgba(255,182,193,0.9);
-  color: #fff;
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
+  padding: 12px;
+  background: #075e54;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.profile-btn {
+  background: white;
+  color: #075e54;
+  border-radius: 50%;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+/* الرسائل */
 .messages {
   flex: 1;
-  padding: 15px;
+  padding: 10px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  scroll-behavior: smooth;
+  gap: 8px;
 }
 
 .message {
-  max-width: 70%;
-  padding: 10px 14px;
-  border-radius: 15px;
-  font-size: 14px;
-  word-wrap: break-word;
-  position: relative;
-}
-
-.sent { 
-  align-self: flex-end; 
-  background: #ffc0cb;
-  color: #000; 
-  border-bottom-right-radius:5px;
-}
-
-.received { 
-  align-self: flex-start; 
-  background: #fff0f5;
-  color: #000; 
-  border-bottom-left-radius:5px;
-}
-
-.name { font-size:11px; opacity:0.7; margin-bottom:3px; }
-
-/* تصميم الريبلاي واضح فوق الاسم */
-.reply { 
-  font-size:13px; 
-  background: rgba(255,228,225,0.8); 
-  padding:6px 10px; 
-  border-radius:12px; 
-  margin-bottom:5px; 
-  font-style: italic;
-  border-left: 4px solid #ff69b4; 
-  max-width: 80%;
-  overflow-wrap: break-word;
-}
-
-.message-actions { display:flex; gap:5px; margin-top:5px; }
-.action-btn { cursor:pointer; font-size:14px; user-select:none; padding:2px 5px; background:rgba(0,0,0,0.2); border-radius:5px; }
-
-.input-area {
   display: flex;
-  padding: 10px;
-  background: rgba(255,182,193,0.9);
+  gap: 6px;
+  align-items: flex-end;
 }
 
-.input-area input,
-.input-area textarea {
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 8px 10px;
+  border-radius: 12px;
+  font-size: 14px;
+  background: white;
+}
+
+.sent .bubble {
+  background: #dcf8c6;
+}
+
+.name {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.time {
+  font-size: 10px;
+  margin-left: 6px;
+  opacity: 0.6;
+}
+
+.chat-img {
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+audio {
+  width: 180px;
+  max-width: 100%;
+}
+
+/* الإدخال */
+.input-area {
+  padding: 6px;
+  background: #f0f0f0;
+}
+
+.input-area input {
+  width: 100%;
+  padding: 6px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 5px;
+}
+
+.chat-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+}
+
+.chat-controls textarea {
   flex: 1;
-  padding: 10px;
-  border-radius: 20px;
   border: none;
   outline: none;
-  margin-right: 5px;
   resize: none;
+  border-radius: 12px;
+  padding: 6px;
 }
 
-.input-area button {
-  padding: 10px 15px;
-  border-radius: 20px;
+/* الأزرار */
+.icon-btn {
+  background: #e0e0e0;
   border: none;
-  background: #ff69b4;
-  color: white;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
   cursor: pointer;
+}
+
+.send-btn {
+  background: #075e54;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.recording-status {
+  font-size: 12px;
+  color: red;
+  margin-top: 4px;
 }
