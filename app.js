@@ -16,17 +16,16 @@ import {
 
 // 🔥 Firebase Config
 const firebaseConfig = {
-  apiKey: "AIzaSyC5FCcxMN3ABX6bsPVvSIyAhOg8KuFvCG8",
-  authDomain: "massage-7e249.firebaseapp.com",
-  projectId: "massage-7e249",
-  storageBucket: "massage-7e249.firebasestorage.app",
-  messagingSenderId: "73041371642",
-  appId: "1:73041371642:web:be66d97827989b8abb4443",
-  measurementId: "G-502EL8V91S"
+  apiKey: "AIzaSyDUnooW--mphcr2F7-r1tAiSVsTZRamsf8",
+  authDomain: "chat-49430.firebaseapp.com",
+  projectId: "chat-49430",
+  storageBucket: "chat-49430.firebasestorage.app",
+  messagingSenderId: "506702405314",
+  appId: "1:506702405314:web:3bad23647bfd71cdfa255b"
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app); // ✅ اتصلحت
 
 
 // ✅ تسجيل Service Worker
@@ -54,9 +53,14 @@ async function requestPermission() {
 
     console.log("Token:", token);
 
-    await addDoc(collection(db, "tokens"), {
-      token: token
-    });
+    if (token) {
+      await addDoc(collection(db, "tokens"), {
+        token: token,
+        time: Date.now()
+      });
+    }
+  } else {
+    console.log("Notification permission denied");
   }
 }
 
@@ -108,6 +112,120 @@ function formatTime(timestamp) {
 }
 
 
+// عرض الرسائل (Realtime 🔥)
+onSnapshot(q, snapshot => {
+  messagesDiv.innerHTML = "";
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const isMe = data.name === nameInput.value;
+
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "message " + (isMe ? "sent" : "received");
+
+    const avatar = data.profilePic || "default-avatar.png";
+    const avatarHTML = avatar ? `<img src="${avatar}" class="avatar">` : "";
+
+    let content = "";
+    if (data.text) content = data.text;
+    if (data.image) content = `<img src="${data.image}" class="chat-img">`;
+    if (data.audio) content = `<audio controls src="${data.audio}"></audio>`;
+
+    msgDiv.innerHTML = `
+      ${avatarHTML}
+      <div>
+        <div class="name">
+          ${data.name || "مستخدم"}
+          <span class="time">${formatTime(data.time)}</span>
+        </div>
+        <div class="bubble">${content}</div>
+      </div>
+    `;
+
+    messagesDiv.appendChild(msgDiv);
+  });
+
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
+
+
+// إرسال نص
+async function sendMessage() {
+  const name = nameInput.value.trim();
+  const text = messageInput.value.trim();
+  if (!name || !text) return;
+
+  await addDoc(messagesRef, {
+    name,
+    text,
+    profilePic: profilePic || "",
+    time: Date.now()
+  });
+
+  messageInput.value = "";
+}
+
+sendBtn.addEventListener("click", sendMessage);
+messageInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") sendMessage();
+});
+
+
+// إرسال صورة (Base64 مؤقت)
+imageInput.addEventListener("change", async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = async () => {
+    await addDoc(messagesRef, {
+      name: nameInput.value,
+      image: reader.result,
+      profilePic: profilePic || "",
+      time: Date.now()
+    });
+  };
+  reader.readAsDataURL(file);
+});
+
+
+// تسجيل الصوت
+let mediaRecorder;
+let audioChunks = [];
+
+recordBtn.addEventListener("click", async () => {
+  if (!mediaRecorder || mediaRecorder.state === "inactive") {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+
+    audioChunks = [];
+    mediaRecorder.start();
+    recordingStatus.textContent = "🎤 جاري التسجيل...";
+
+    mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+
+    mediaRecorder.onstop = async () => {
+      recordingStatus.textContent = "";
+
+      const blob = new Blob(audioChunks, { type: "audio/webm" });
+      const reader = new FileReader();
+
+      reader.onloadend = async () => {
+        await addDoc(messagesRef, {
+          name: nameInput.value,
+          audio: reader.result,
+          profilePic: profilePic || "",
+          time: Date.now()
+        });
+      };
+
+      reader.readAsDataURL(blob);
+    };
+
+  } else {
+    mediaRecorder.stop();
+  }
+});
 // عرض الرسائل
 onSnapshot(q, snapshot => {
   messagesDiv.innerHTML = "";
