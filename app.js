@@ -16,12 +16,13 @@ import {
 
 // 🔥 Firebase Config
 const firebaseConfig = {
-  apiKey: "AIzaSyDUnooW--mphcr2F7-r1tAiSVsTZRamsf8",
-  authDomain: "chat-49430.firebaseapp.com",
-  projectId: "chat-49430",
-  storageBucket: "chat-49430.firebasestorage.app",
-  messagingSenderId: "506702405314",
-  appId: "1:506702405314:web:3bad23647bfd71cdfa255b"
+  apiKey: "AIzaSyAm7jGKD6YzJ7sEAH9Qk2TvIQNmUaFr59E",
+  authDomain: "hyaty-53f82.firebaseapp.com",
+  projectId: "hyaty-53f82",
+  storageBucket: "hyaty-53f82.firebasestorage.app",
+  messagingSenderId: "1042737484371",
+  appId: "1:1042737484371:web:5f4b6206c4142c6e992ca6",
+  measurementId: "G-6G0M1DBDX4"
 };
 
 const app = initializeApp(firebaseConfig);
