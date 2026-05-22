@@ -1,0 +1,54 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: #d1d1d1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.player-box {
+  background: #1a1a1a;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  width: 300px;
+}
+
+input[type="file"] {
+  width: 100%;
+  margin-bottom: 15px;
+  color: #ccc;
+}
+
+audio {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+button {
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  width: 45%;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #555;
+}
