@@ -1,12 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  onSnapshot, 
-  query, 
-  orderBy 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getDatabase,
+  ref,
+  push,
+  onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 import { 
   getMessaging, 
@@ -26,7 +24,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app); // ✅ اتصلحت
+const db = getDatabase(app); // ✅ اتصلحت
 
 
 // ✅ تسجيل Service Worker
@@ -70,8 +68,7 @@ requestPermission();
 
 // ================== الشات ==================
 
-const messagesRef = collection(db, "messages");
-const q = query(messagesRef, orderBy("time"));
+const messagesRef = ref(db, "messages");
 
 const messagesDiv = document.getElementById("messages");
 const nameInput = document.getElementById("name");
@@ -114,11 +111,15 @@ function formatTime(timestamp) {
 
 
 // عرض الرسائل (Realtime 🔥)
-onSnapshot(q, snapshot => {
+onValue(messagesRef, snapshot => {
   messagesDiv.innerHTML = "";
 
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
+  messagesDiv.innerHTML = "";
+
+const data = snapshot.val();
+
+for (const key in data) {
+  const msg = data[key];
     const isMe = data.name === nameInput.value;
 
     const msgDiv = document.createElement("div");
